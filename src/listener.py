@@ -2,42 +2,23 @@
 import rospy
 from std_msgs.msg import String
 
-'''
-	pub2 = rospy.Publisher('filtered', String, queue_size=10)
-#	rospy.init_node('listener', anonymous=True)
-#	rate = rospy.Rate(10) # 10hz
-	while not rospy.is_shutdown():
-		tenmex = "I receive 10 messagges | %s" % rospy.get_time()
-		rospy.loginfo(tenmex)
-		pub2.publish(tenmex)
-#		rate.sleep()
-'''
 
-class Counter:
-	def __init__(self):
-		self.counter = 0
-
-	def inc(self):
-		if self.counter == 10:
-			self.counter = 1
-		else:
-			self.counter = self.counter + 1
-		return self.counter
-
+c = 0
 
 def callback(data):
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 
-	if c.inc() == 10:
+	global c
+	c += 1
+
+	if c == 10:
+		c = 0
 		tenmex = "I receive 10 messagges | %s" % rospy.get_time()
 		rospy.loginfo(tenmex)
 		pub.publish(tenmex)
 
 
 def listener():
-
-	global c
-	c = Counter()
 
 	global pub
 	pub = rospy.Publisher("filtered", String, queue_size=10)
